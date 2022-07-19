@@ -17,8 +17,21 @@ import re
 S = ["a","b"]
 R = []
 
-def conjugate(x,y):
-    pass
+#List various conjugacy classes and members
+# k - desired number of classes
+# n - desired number of rep.s per class
+def listClasses(k,n=5):
+    print('Conjugacy Classes')
+    word = ''
+    for i in range(k+1):
+        word = nextSL(word) #Skip empty word
+        if reduce(word) == '':
+            continue
+        
+        conjClass = cc(word,n,failsafe=15)
+        conjClassArray = [ wordToArray(w) for w in conjClass]
+        conjGeo = arrayToWord(min(conjClassArray,key=len))
+        print(conjGeo,':',conjClass)
 
 #List n conjugacy class elements of [x]_c
 #
