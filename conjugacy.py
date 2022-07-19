@@ -38,8 +38,8 @@ def cc(x,n,failsafe=3):
 
     while (len(cc_members) < n):
         conjugate = reduce(current+x+invert(current))
+        #print(conjugate,'=_G',current+x+invert(current),'(',current,')')
         current = nextSL(current)
-        print(conjugate,'conj, =_G',current+x+invert(current))
         if (conjugate not in cc_members):
             cc_members.add(conjugate)
             skip = 0
