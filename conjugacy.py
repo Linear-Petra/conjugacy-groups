@@ -31,7 +31,7 @@ def conjugate(x,y):
 # in a row, then quit early
 # Useful when there is less than n members of [x]_c
 # failseafe = -1 implies no failsafe
-def cc(x,n,failsafe=10):
+def cc(x,n,failsafe=-1):
     skip = 0
     
     cc_members = set()
