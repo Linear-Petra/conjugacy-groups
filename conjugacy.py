@@ -31,15 +31,24 @@ def conjugate(x,y):
 # in a row, then quit early
 # Useful when there is less than n members of [x]_c
 def cc(x,n,failsafe=3):
+    skip = 0
     
-    cc_members = {}
+    cc_members = set()
     current = ''
 
     while (len(cc_members) < n):
         conjugate = reduce(current+x+invert(current))
         current = nextSL(current)
+        print(conjugate,'conj, =_G',current+x+invert(current))
         if (conjugate not in cc_members):
             cc_members.add(conjugate)
+            skip = 0
+        else:
+            skip += 1
+        if (skip >= failsafe):
+            print('fs')
+            break
+    return cc_members
     
 #Invert a word
 # aabda becomes a-d-b-a-a-
@@ -88,5 +97,5 @@ def arrayToWord(A):
 def reduce(w):
     w_red = w
     while ((w_repl := re.sub(r'([a-zA-Z])(\1-|-\1(?!-))','',w_red)) != w_red):
-        print(w_repl)
         w_red = w_repl
+    return w_red
