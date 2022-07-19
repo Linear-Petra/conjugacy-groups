@@ -19,7 +19,7 @@ R = []
 
 #List various conjugacy classes and members
 # k - desired number of classes
-# n - desired number of rep.s per class
+# n - desired number of rep.s per class shown
 def listClasses(k,n=5):
     print('Conjugacy Classes')
     word = ''
@@ -28,10 +28,12 @@ def listClasses(k,n=5):
         if reduce(word) == '':
             continue
         
-        conjClass = cc(word,n,failsafe=15)
+        conjClass = cc(word,failsafe=15)
         conjClassArray = [ wordToArray(w) for w in conjClass]
         conjGeo = arrayToWord(min(conjClassArray,key=len))
-        print(conjGeo,':',conjClass)
+        ccList = sorted(list(conjClassArray),key=len)[:n]
+        ccShort = [arrayToWord(A) for A in ccList]
+        print(conjGeo,':',ccShort)
 
 #List n conjugacy class elements of [x]_c
 #
@@ -43,8 +45,11 @@ def listClasses(k,n=5):
 # If <failsafe> attempts to add new members fail
 # in a row, then quit early
 # Useful when there is less than n members of [x]_c
-# failseafe = -1 implies no failsafe
-def cc(x,n,failsafe=-1):
+# failsafe = -1 implies no failsafe
+#
+# Example of usage:
+# 'aba-b-' in cc('ab-')
+def cc(x,n=1000,failsafe=-1):
     skip = 0
     
     cc_members = set()
