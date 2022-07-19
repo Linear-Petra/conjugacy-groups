@@ -30,7 +30,8 @@ def conjugate(x,y):
 # If <failsafe> attempts to add new members fail
 # in a row, then quit early
 # Useful when there is less than n members of [x]_c
-def cc(x,n,failsafe=3):
+# failseafe = -1 implies no failsafe
+def cc(x,n,failsafe=10):
     skip = 0
     
     cc_members = set()
@@ -45,8 +46,8 @@ def cc(x,n,failsafe=3):
             skip = 0
         else:
             skip += 1
-        if (skip >= failsafe):
-            print('fs')
+        if (skip == failsafe):
+            #print('fs')
             break
     return cc_members
     
