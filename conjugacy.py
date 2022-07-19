@@ -17,6 +17,19 @@ import re
 S = ["a","b"]
 R = []
 
+#Conjugacy growth - number of conjugacy classes whose
+#unique geodisic up to conjugacy is n away from the origin
+#Aka the growth function of ConjSL (Though the rep. isn't
+#necessarily shortlex, it is unique and short)
+#
+# numCC - number of conjugacy classes to take geodisics of
+# if conjSLGrowth(n+1) = 0, then increase this
+def conjSLGrowth(n,numCC=100):
+    reg = re.compile(r'^([A-Za-z)]-?){'+str(n)+'}$')
+    CC = listClasses(numCC)
+    return len(list(filter(reg.match,CC)))
+    
+
 #List various conjugacy classes and members
 # k - desired number of classes
 # n - desired number of rep.s per class shown
