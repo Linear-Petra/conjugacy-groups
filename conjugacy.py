@@ -53,10 +53,17 @@ def cc(x,n,failsafe=3):
 #Invert a word
 # aabda becomes a-d-b-a-a-
 def invert(w):
-    inverse = ''
-    for letter in w:
-        inverse = letter + '-'+inverse
-    return inverse
+    A = wordToArray(w)
+    A.reverse()
+    inverse = [invertLetter(l) for l in A]
+    return arrayToWord(inverse)
+
+#Invert a letter
+def invertLetter(l):
+    if re.match('.-',l):
+        return l[0]
+    else:
+        return l+'-'
 
 #Next ShortLex word in S*
 #Follows convention of a < a^{-1} < b < b^{-1} < ...
