@@ -20,20 +20,32 @@ R = []
 #List various conjugacy classes and members
 # k - desired number of classes
 # n - desired number of rep.s per class shown
-def listClasses(k,n=5):
-    print('Conjugacy Classes')
+# p - T/F, print output
+def listClasses(k,n=5,p=False):
+    if p: print('Conjugacy Classes')
     word = ''
-    for i in range(k+1):
+    ccGeos = set()
+    numCCs = 0
+    
+    while numCCs < k:
         word = nextSL(word) #Skip empty word
         if reduce(word) == '':
             continue
         
         conjClass = cc(word,failsafe=15)
+
+        #Skip repeats
+        if not ccGeos.isdisjoint(conjClass):
+            continue
+        
         conjClassArray = [ wordToArray(w) for w in conjClass]
         conjGeo = arrayToWord(min(conjClassArray,key=len))
+        ccGeos.add(conjGeo)
         ccList = sorted(list(conjClassArray),key=len)[:n]
         ccShort = [arrayToWord(A) for A in ccList]
-        print(conjGeo,':',ccShort)
+        if p: print(conjGeo,':',ccShort)
+        numCCs += 1
+    return ccGeos
 
 #List n conjugacy class elements of [x]_c
 #
