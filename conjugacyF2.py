@@ -13,6 +13,7 @@
 # a^{-1} is a-
 
 import re
+import conj_lib as cl
 
 S = ["a","b"]
 R = []
@@ -41,8 +42,8 @@ def listClasses(k,n=5,p=False):
     numCCs = 0
     
     while numCCs < k:
-        word = nextSL(word) #Skip empty word
-        if reduce(word) == '':
+        word = cl.nextSL(word,S) #Skip empty word
+        if cl.reduce(word) == '':
             continue
         
         conjClass = cc(word,failsafe=15)
@@ -51,11 +52,11 @@ def listClasses(k,n=5,p=False):
         if not ccGeos.isdisjoint(conjClass):
             continue
         
-        conjClassArray = [ wordToArray(w) for w in conjClass]
-        conjGeo = arrayToWord(min(conjClassArray,key=len))
+        conjClassArray = [ cl.wordToArray(w) for w in conjClass]
+        conjGeo = cl.arrayToWord(min(conjClassArray,key=len))
         ccGeos.add(conjGeo)
         ccList = sorted(list(conjClassArray),key=len)[:n]
-        ccShort = [arrayToWord(A) for A in ccList]
+        ccShort = [cl.arrayToWord(A) for A in ccList]
         if p: print(conjGeo,':',ccShort)
         numCCs += 1
     return ccGeos
@@ -81,9 +82,9 @@ def cc(x,n=1000,failsafe=-1):
     current = ''
 
     while (len(cc_members) < n):
-        conjugate = reduce(current+x+invert(current))
+        conjugate = cl.reduce(current+x+cl.invert(current))
         #print(conjugate,'=_G',current+x+invert(current),'(',current,')')
-        current = nextSL(current)
+        current = cl.nextSL(current,S)
         if (conjugate not in cc_members):
             cc_members.add(conjugate)
             skip = 0
@@ -93,60 +94,3 @@ def cc(x,n=1000,failsafe=-1):
             #print('fs')
             break
     return cc_members
-    
-#Invert a word
-# aabda becomes a-d-b-a-a-
-def invert(w):
-    A = wordToArray(w)
-    A.reverse()
-    inverse = [invertLetter(l) for l in A]
-    return arrayToWord(inverse)
-
-#Invert a letter
-def invertLetter(l):
-    if re.match('.-',l):
-        return l[0]
-    else:
-        return l+'-'
-
-#Next ShortLex word in S*
-#Follows convention of a < a^{-1} < b < b^{-1} < ...
-#Otherwise, order determined by order of S.
-def nextSL(w):
-    #Empty string special case
-    if (w == ''):
-        return S[0]
-
-    #Semigroup generators in convention order
-    Sp = []
-    for a in S:
-        Sp.append(a)
-        Sp.append(a+'-')
-
-    #Find something to go forwards in
-    A = wordToArray(w)
-    for i in range(1,len(A)+1):
-        if (A[-i] != Sp[-1]): #A character isn't the last inverse
-            A[-i] = Sp[Sp.index(A[-i])+1]
-            #All last characters before the change are reset
-            for j in range(1,i):
-                A[-j] = S[0]
-            return arrayToWord(A)
-        if (i == len(A)): #String is all last character
-            A = [S[0] for i in range(len(A)+1)]
-            return arrayToWord(A)
-
-#Turns a word into an array of characters
-def wordToArray(w):
-    return re.findall(r'[a-zA-Z]-?',w)
-
-#Turns an array back into a word
-def arrayToWord(A):
-    return ''.join(A)
-
-#Reduce a word - change all instances of a^{-1}a or aa^{-1} to empty
-def reduce(w):
-    w_red = w
-    while ((w_repl := re.sub(r'([a-zA-Z])(\1-|-\1(?!-))','',w_red)) != w_red):
-        w_red = w_repl
-    return w_red
