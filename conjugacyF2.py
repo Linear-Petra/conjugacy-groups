@@ -1,7 +1,7 @@
 ########
 #
 # Lynn & Petra
-# conjugacy.py - Investigate conjugacy growth in F_2
+# conjugacyF2.py - Investigate conjugacy growth in F_2
 #
 # Group G = < S | R >
 # x & y are conjugate iff there exists g in G such that gxg^{-1} = y
