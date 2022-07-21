@@ -38,9 +38,9 @@ def invertLetter(l):
 #Otherwise, order determined by order of S.
 def nextSL(w,S):
     if not verify(w):
-        raise ValueError("Not a valid word")
+        raise ValueError(w,"is not a valid word")
     if not type(S) == list:
-        raise TypeError("Not a list of generators")
+        raise TypeError(S,"is not a list of generators")
     #Empty string special case
     if (w == ''):
         return S[0]
@@ -67,20 +67,20 @@ def nextSL(w,S):
 #Turns a word into an array of characters
 def wordToArray(w):
     if not verify(w):
-        raise ValueError("Not a valid word")
+        raise ValueError(w,"is not a valid word")
     return re.findall(r'[a-zA-Z]-?',w)
 
 #Turns an array back into a word
 def arrayToWord(A):
     for l in A:
         if not re.match(r'[a-zA-Z]-?',l):
-            raise ValueError("Not a valid word")
+            raise ValueError(l,"in",A,"is not a valid letter")
     return ''.join(A)
 
 #Reduce a word - change all instances of a^{-1}a or aa^{-1} to empty
 def reduce(w):
     if not verify(w):
-        raise ValueError("Not a valid word")
+        raise ValueError(w,"is not a valid word")
     w_red = w
     while ((w_repl := re.sub(r'([a-zA-Z])(\1-|-\1(?!-))','',w_red)) != w_red):
         w_red = w_repl

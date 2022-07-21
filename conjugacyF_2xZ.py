@@ -16,7 +16,7 @@ S = ['a','b','c']
 # Determine if a word is ShortLex
 def isSL(w):
     if not cl.verify(w):
-        raise ValueError("Not a valid word")
+        raise ValueError(w,"is not a valid word")
 
     return re.match(r'^(?!.*?([a-zA-Z])(\1-|-\1(?!-)))((a-?)*(b-?)*)*(c-?)*$',w) != None
     #Something of the form (a^{i_k} b^{j_k})^k c^l) for k,l,i_k,j_k in Z
