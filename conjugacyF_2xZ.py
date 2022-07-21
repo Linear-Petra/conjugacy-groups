@@ -21,7 +21,7 @@ def isSL(w):
     return re.match(r'^(?!.*?([a-zA-Z])(\1-|-\1(?!-)))((a-?)*(b-?)*)*(c-?)*$',w) != None
     #Something of the form (a^{i_k} b^{j_k})^k c^l) for k,l,i_k,j_k in Z
     #Equivalent to
-    #return (cl.reduce(w) == w) and (re.match(r'^((a-?)*(b-?)*)*c*$',w) != None)
+    #return (cl.reduce(w) == w) and (re.match(r'^((a-?)*(b-?)*)*(c-)*$',w) != None)
 
 #Reduces a word and makes it so isSL(w) == True
 def shortlexify(w):
