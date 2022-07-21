@@ -32,3 +32,24 @@ def shortlexify(w):
     w_sl = re.sub('c-?','',w) + 'c'*c_count + 'c-'*cm_count #c commutes with all
     w_sl = cl.reduce(w_sl)
     return w_sl
+
+#Search for a bunch of conjugacy class representatives
+#See conjugacyF2.py
+def cc(w,n=10,failsafe=-1):
+    skip = 0
+    
+    cc_members = set()
+    current = ''
+
+    while (len(cc_members) < n):
+        conjugate = shortlexify(current+w+cl.invert(current))
+        current = cl.nextSL(current,S)
+        if (conjugate not in cc_members):
+            cc_members.add(conjugate)
+            skip = 0
+        else:
+            skip += 1
+        if (skip == failsafe):
+            break
+    return cc_members
+
